@@ -3,8 +3,6 @@ package gen
 import (
 	"database/sql"
 	"errors"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jimsmart/schema"
 	cfg "gormui/config"
 	"gormui/gen/template/dao"
 	"gormui/gen/template/logic"
@@ -13,6 +11,9 @@ import (
 	"os"
 	"path/filepath"
 	"text/template"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jimsmart/schema"
 )
 
 func Project(c cfg.Param) error {
@@ -57,15 +58,15 @@ func Project(c cfg.Param) error {
 				Fields:     modelInfo.Fields,
 			}
 			// 先移除原有的gen文件
-			os.Remove(toDir + "/model/" + tableName + "Model_gen.go")
-			err := baseStr(model.ModelGenTemplate, toDir+"/model/"+tableName+"Model_gen.go", base)
+			os.Remove(toDir + "/model/" + tableName + "_gen.go")
+			err := baseStr(model.ModelGenTemplate, toDir+"/model/"+tableName+"_gen.go", base)
 			if err != nil {
 				return err
 			}
 			// 判断文件是否存在，存在则跳过
-			_, err = os.Stat(toDir + "/model/" + tableName + "Model.go")
+			_, err = os.Stat(toDir + "/model/" + tableName + ".go")
 			if err != nil {
-				err = baseStr(model.ModelTemplate, toDir+"/model/"+tableName+"Model.go", base)
+				err = baseStr(model.ModelTemplate, toDir+"/model/"+tableName+".go", base)
 				if err != nil {
 					return err
 				}
@@ -106,15 +107,15 @@ func Project(c cfg.Param) error {
 				Fields:       modelInfo.Fields,
 			}
 			// 先将原有的gen文件删除
-			os.Remove(toDir + "/logic/" + tableName + "Service_gen.go")
-			err := baseStr(logic.ServiceGenTemplate, toDir+"/logic/"+tableName+"Service_gen.go", base)
+			os.Remove(toDir + "/logic/" + tableName + "_gen.go")
+			err := baseStr(logic.ServiceGenTemplate, toDir+"/logic/"+tableName+"_gen.go", base)
 			if err != nil {
 				return err
 			}
 			// 判断原有的service文件是否存在，如果不存在则生成
-			_, err = os.Stat(toDir + "/logic/" + tableName + "Service.go")
+			_, err = os.Stat(toDir + "/logic/" + tableName + ".go")
 			if err != nil {
-				err := baseStr(logic.ServiceTemplate, toDir+"/logic/"+tableName+"Service.go", base)
+				err := baseStr(logic.ServiceTemplate, toDir+"/logic/"+tableName+".go", base)
 				if err != nil {
 					return err
 				}
@@ -148,9 +149,20 @@ func Project(c cfg.Param) error {
 				ProjectName: ProjectName,
 				StructName:  structName,
 			}
-			err := baseStr(dao.DaoTemplate, toDir+"/dao/"+tableName+"Dao.go", base)
+
+			// 先将原有的gen文件删除
+			os.Remove(toDir + "/dao/" + tableName + "_gen.go")
+			err := baseStr(dao.DaoGenTemplate, toDir+"/dao/"+tableName+"_gen.go", base)
 			if err != nil {
 				return err
+			}
+			// 判断原有的service文件是否存在，如果不存在则生成
+			_, err = os.Stat(toDir + "/dao/" + tableName + ".go")
+			if err != nil {
+				err := baseStr(dao.DaoTemplate, toDir+"/dao/"+tableName+".go", base)
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}

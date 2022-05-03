@@ -4,7 +4,7 @@ var ServiceTemplate = `
 package logic
 
 var (
-	{{.StructName}} = {{.StructName}}Service{}
+	{{.StructName}} = {{.StructName}}Logic{}
 )
 
 // TODO 你的新逻辑可写在这里

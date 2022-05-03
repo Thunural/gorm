@@ -8,12 +8,12 @@ import (
 	"{{.ProjectName}}/model"
 )
 
-// {{.StructName}}Service 服务
-type {{.StructName}}Service struct {
+// {{.StructName}}Logic 服务
+type {{.StructName}}Logic struct {
 }
 
 // Create 创建
-func ( *{{.StructName}}Service) Create(p *model.{{.StructName}}) (int64, error) {
+func ( *{{.StructName}}Logic) Create(p *model.{{.StructName}}) (int64, error) {
 	id, err := dao.{{.StructName}}.Create(p)
 	if err != nil {
 		return 0, err
@@ -24,12 +24,12 @@ func ( *{{.StructName}}Service) Create(p *model.{{.StructName}}) (int64, error) 
 
  
 // Delete  ...
-func ( *{{.StructName}}Service) Delete(ids []int64) error {
+func ( *{{.StructName}}Logic) Delete(ids []int64) error {
 	return dao.{{.StructName}}.Delete(ids)
 }
 
 // Select ...
-func (*{{.StructName}}Service) SelectByID(id int64) (*model.{{.StructName}}, error) {
+func (*{{.StructName}}Logic) SelectByID(id int64) (*model.{{.StructName}}, error) {
 	data, err := dao.{{.StructName}}.SelectByID(id)
 	if err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func (*{{.StructName}}Service) SelectByID(id int64) (*model.{{.StructName}}, err
 
 
 // Update ...
-func (*{{.StructName}}Service) Update(p *model.{{.StructName}}) (*model.{{.StructName}}, error) {
+func (*{{.StructName}}Logic) Update(p *model.{{.StructName}}) (*model.{{.StructName}}, error) {
 	data, err := dao.{{.StructName}}.Update(p)
 	if err != nil {
 		return nil, err
