@@ -1,7 +1,3 @@
-package template
-
-var ServiceTemplate = `
-
 package service
 import (
 	"{{.ProjectName}}/dao"
@@ -92,5 +88,3 @@ func (*{{.StructName}}Service) Update(p *{{.StructName}}UpdateParam) (*{{.Struct
 	 
 	return &back, nil
 }
-
-`
