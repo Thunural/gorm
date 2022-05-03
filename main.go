@@ -12,6 +12,7 @@ import (
 	"gormui/gen"
 	"gormui/theme"
 	"gormui/utils"
+	"os"
 	"strings"
 )
 
@@ -80,8 +81,9 @@ func main() {
 					// 如果返回等于nil则目录存在
 					if err == nil {
 						path := p.OutFiles + "/" + p.ProjectName
-						tips := dialog.NewConfirm("提示", path+"\n目录已存在是否覆盖？", func(check bool) {
+						tips := dialog.NewConfirm("提示", path+"\n目录已存在是否重新生成？", func(check bool) {
 							if check {
+								_ = os.RemoveAll(path)
 								err := gen.Project(p)
 								if err != nil {
 									dialog.ShowInformation("错误", err.Error(), myWindow)

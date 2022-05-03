@@ -17,7 +17,7 @@ var (
 )
 
 // Create 增
-func (*{{.StructName}}Dao) Create(m *model.{{.StructName}}) (int, error) {
+func (*{{.StructName}}Dao) Create(m *model.{{.StructName}}) (int64, error) {
 	m.CreateTime = time.Now()
 	m.UpdateTime = time.Now()
 	err := global.DB.Create(&m).Error
@@ -28,14 +28,14 @@ func (*{{.StructName}}Dao) Create(m *model.{{.StructName}}) (int, error) {
 }
 
 // Delete 删
-func (*{{.StructName}}Dao) Delete(ids []int) error {
+func (*{{.StructName}}Dao) Delete(ids []int64) error {
 	err := global.DB.Where("id in(?)", ids).Delete(&model.{{.StructName}}{}).Error
 	return err
 }
 
 // SelectByID 查
 func (*{{.StructName}}Dao) SelectByID(id int64) (*model.{{.StructName}}, error) {
-	var m model.{{.StructName}}
+	var m *model.{{.StructName}}
 	err := global.DB.Where("id = ?", id).Last(&m).Error
 	if err != nil {
 		return nil, err
@@ -59,8 +59,8 @@ func (*{{.StructName}}Dao) Update(m *model.{{.StructName}}) (*model.{{.StructNam
 }
 
 // List 列表查询，不支持分页
-func (*{{.StructName}}Dao) List() ([]model.{{.StructName}}, error) {
-	var m []model.{{.StructName}}
+func (*{{.StructName}}Dao) List() ([]*model.{{.StructName}}, error) {
+	var m []*model.{{.StructName}}
 	err := global.DB.Find(&m).Error
 	if err != nil {
 		return nil, err
@@ -69,8 +69,8 @@ func (*{{.StructName}}Dao) List() ([]model.{{.StructName}}, error) {
 }
 
 // Page 分页查询
-func (*{{.StructName}}Dao) Page(params model.SelectPageReq) ([]model.{{.StructName}}, int64, error) {
-	var m []model.{{.StructName}}
+func (*{{.StructName}}Dao) Page(params model.SelectPageReq) ([]*model.{{.StructName}}, int64, error) {
+	var m []*model.{{.StructName}}
 	var total int64
 	DB := global.DB.Model(&m)
 	if params.Page > 0 && params.Size > 0 {

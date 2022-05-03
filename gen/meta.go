@@ -171,7 +171,7 @@ func sqlTypeToGoType(mysqlType string, nullable bool, gureguTypes bool) string {
 	switch mysqlType {
 	case "tinyint", "int", "smallint", "mediumint":
 
-		return golangInt
+		return golangInt64
 	case "bigint":
 
 		return golangInt64
