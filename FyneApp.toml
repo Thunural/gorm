@@ -1,0 +1,8 @@
+Website = "https://github.com/Thunural/gorm"
+
+[Details]
+  Icon = "Icon.png"
+  Name = "Gorm代码生成"
+  ID = "com.asoDesign.app"
+  Version = "1.0.0"
+  Build = 2
