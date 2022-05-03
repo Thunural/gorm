@@ -12,7 +12,6 @@ import (
 	"gormui/gen"
 	"gormui/theme"
 	"gormui/utils"
-	"os"
 	"strings"
 )
 
@@ -47,7 +46,7 @@ func main() {
 	ProjectName.SetPlaceHolder("请输入包名")
 	ProjectName.Validator = validation.NewRegexp("^[a-zA-Z]+$", "请输入包名，只允许输入英文")
 
-	genType := widget.NewCheckGroup([]string{"model", "dao", "service"}, func(i []string) {
+	genType := widget.NewCheckGroup([]string{"model", "dao", "logic"}, func(i []string) {
 		p.CheckType = i
 	})
 
@@ -83,7 +82,6 @@ func main() {
 						path := p.OutFiles + "/" + p.ProjectName
 						tips := dialog.NewConfirm("提示", path+"\n目录已存在是否重新生成？", func(check bool) {
 							if check {
-								_ = os.RemoveAll(path)
 								err := gen.Project(p)
 								if err != nil {
 									dialog.ShowInformation("错误", err.Error(), myWindow)

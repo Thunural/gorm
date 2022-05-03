@@ -12,10 +12,6 @@ import (
 type {{.StructName}}Service struct {
 }
 
-var (
-	{{.StructName}} = {{.StructName}}Service{}
-)
-
 // Create 创建
 func ( *{{.StructName}}Service) Create(p *model.{{.StructName}}) (int64, error) {
 	id, err := dao.{{.StructName}}.Create(p)

@@ -74,8 +74,8 @@ func Project(c cfg.Param) error {
 	}
 
 	// 搞service文件夹内的
-	if in("service", c.CheckType) {
-		os.Mkdir(toDir+"/service", 0777)
+	if in("logic", c.CheckType) {
+		os.Mkdir(toDir+"/logic", 0777)
 		dbStr := c.UserName + ":" + c.Password + "@tcp(" + c.Address + ":" + c.Port + ")/" + c.Database + "?charset=utf8&parseTime=true&loc=Local"
 		var db, err = sql.Open("mysql", dbStr)
 		if err != nil {
@@ -106,15 +106,15 @@ func Project(c cfg.Param) error {
 				Fields:       modelInfo.Fields,
 			}
 			// 先将原有的gen文件删除
-			os.Remove(toDir + "/service/" + tableName + "Service_gen.go")
-			err := baseStr(logic.ServiceGenTemplate, toDir+"/service/"+tableName+"Service_gen.go", base)
+			os.Remove(toDir + "/logic/" + tableName + "Service_gen.go")
+			err := baseStr(logic.ServiceGenTemplate, toDir+"/logic/"+tableName+"Service_gen.go", base)
 			if err != nil {
 				return err
 			}
 			// 判断原有的service文件是否存在，如果不存在则生成
-			_, err = os.Stat(toDir + "/service/" + tableName + "Service.go")
+			_, err = os.Stat(toDir + "/logic/" + tableName + "Service.go")
 			if err != nil {
-				err := baseStr(logic.ServiceTemplate, toDir+"/service/"+tableName+"Service.go", base)
+				err := baseStr(logic.ServiceTemplate, toDir+"/logic/"+tableName+"Service.go", base)
 				if err != nil {
 					return err
 				}
