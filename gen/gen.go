@@ -7,8 +7,8 @@ import (
 	"github.com/jimsmart/schema"
 	cfg "gormui/config"
 	"gormui/gen/template/dao"
+	"gormui/gen/template/logic"
 	"gormui/gen/template/model"
-	"gormui/gen/template/service"
 	"gormui/utils"
 	"os"
 	"path/filepath"
@@ -56,14 +56,19 @@ func Project(c cfg.Param) error {
 				TableName:  tableName,
 				Fields:     modelInfo.Fields,
 			}
-			// 同时生成gen
+			// 先移除原有的gen文件
+			os.Remove(toDir + "/model/" + tableName + "Model_gen.go")
 			err := baseStr(model.ModelGenTemplate, toDir+"/model/"+tableName+"Model_gen.go", base)
 			if err != nil {
 				return err
 			}
-			err = baseStr(model.ModelTemplate, toDir+"/model/"+tableName+"Model.go", base)
+			// 判断文件是否存在，存在则跳过
+			_, err = os.Stat(toDir + "/model/" + tableName + "Model.go")
 			if err != nil {
-				return err
+				err = baseStr(model.ModelTemplate, toDir+"/model/"+tableName+"Model.go", base)
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}
@@ -100,9 +105,19 @@ func Project(c cfg.Param) error {
 				FieldsCreate: modelInfo.Fields, //这里应该去掉主键，但是懒得弄了
 				Fields:       modelInfo.Fields,
 			}
-			err := baseStr(service.ServiceTemplate, toDir+"/service/"+tableName+"Service.go", base)
+			// 先将原有的gen文件删除
+			os.Remove(toDir + "/service/" + tableName + "Service_gen.go")
+			err := baseStr(logic.ServiceGenTemplate, toDir+"/service/"+tableName+"Service_gen.go", base)
 			if err != nil {
 				return err
+			}
+			// 判断原有的service文件是否存在，如果不存在则生成
+			_, err = os.Stat(toDir + "/service/" + tableName + "Service.go")
+			if err != nil {
+				err := baseStr(logic.ServiceTemplate, toDir+"/service/"+tableName+"Service.go", base)
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}

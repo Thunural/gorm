@@ -1,7 +1,7 @@
-package service
+package logic
 
-var ServiceTemplate = `
-package service
+var ServiceGenTemplate = `
+package logic
 
 import (
 	"{{.ProjectName}}/dao"
@@ -13,17 +13,17 @@ type {{.StructName}}Service struct {
 }
 
 var (
-	{{.StructName}} = {{.StructName}}Service
+	{{.StructName}} = {{.StructName}}Service{}
 )
 
 // Create 创建
-func ( *{{.StructName}}Service) Create(p *model.{{.StructName}}) (*model.{{.StructName}}, error) {
-	data, err := dao.{{.StructName}}.Create(p)
+func ( *{{.StructName}}Service) Create(p *model.{{.StructName}}) (int64, error) {
+	id, err := dao.{{.StructName}}.Create(p)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 	  
-	return data, nil
+	return id, nil
 }
 
  
@@ -44,7 +44,7 @@ func (*{{.StructName}}Service) SelectByID(id int64) (*model.{{.StructName}}, err
 
 
 // Update ...
-func (*{{.StructName}}Service) Update(p *model.{{.StructName}}) (*model.{{.StructName}}UpdateBack, error) {
+func (*{{.StructName}}Service) Update(p *model.{{.StructName}}) (*model.{{.StructName}}, error) {
 	data, err := dao.{{.StructName}}.Update(p)
 	if err != nil {
 		return nil, err
