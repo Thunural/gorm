@@ -1,4 +1,8 @@
 package service
+
+var ServiceTemplate = `
+package service
+
 import (
 	"{{.ProjectName}}/dao"
 	"{{.ProjectName}}/model"
@@ -88,3 +92,4 @@ func (*{{.StructName}}Service) Update(p *{{.StructName}}UpdateParam) (*{{.Struct
 	 
 	return &back, nil
 }
+`

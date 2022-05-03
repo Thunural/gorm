@@ -1,4 +1,8 @@
 package model
+
+var ModelGenTemplate = `
+package model
+
 import (
 	"time"
 )
@@ -17,3 +21,4 @@ type {{.StructName}} struct {
 func ( {{.StructName}}) TableName() string {
 	return "{{.TableName}}"
 }
+`

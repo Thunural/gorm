@@ -1,4 +1,7 @@
 package dao
+
+var DaoTemplate = `
+package dao
 import (
 	"{{.ProjectName}}/model"
 	"{{.ProjectName}}/global"
@@ -8,6 +11,10 @@ import (
 // {{.StructName}}Dao ...
 type {{.StructName}}Dao struct {
 }
+
+var (
+    {{.StructName}} = {{.StructName}}Dao{}
+)
 
 // Create 增
 func (*{{.StructName}}Dao) Create(m *model.{{.StructName}}) (int, error) {
@@ -82,3 +89,4 @@ func (*{{.StructName}}Dao) Page(params model.SelectPageReq) ([]model.{{.StructNa
 	}
 	return m, total, nil
 }
+`
